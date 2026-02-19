@@ -1,769 +1,361 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mauricio M. Paniagua - Portfolio Académico</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Encuesta de satisfacción</title>
+  <style>
+    :root {
+      --bg: #ededee;
+      --paper: #f7f7f8;
+      --red: #d70a3d;
+      --pink: #ea0048;
+      --dark: #111827;
+      --muted: #6b7280;
+      --line: #ced1d6;
+      --ok: #2da62b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Segoe UI", Arial, sans-serif; background: var(--bg); color: var(--dark); }
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #fff;
-            min-height: 100vh;
-        }
+    .top {
+      background: linear-gradient(90deg, #4f0017 0%, #c10537 55%, #8f0024 100%);
+      padding: 10px 0;
+      min-height: 84px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .top-inner {
+      width: min(980px, 95%);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+    .logo { color: #fff; font-weight: 800; letter-spacing: .4px; line-height: .85; font-size: 14px; }
+    .logo b { display: block; font-size: 36px; }
+    .menu {
+      display: flex; gap: 22px; align-items: center;
+      background: rgba(106, 98, 121, .78);
+      border-radius: 999px;
+      padding: 12px 24px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.1);
+    }
+    .menu a { color: #fff; text-decoration: none; font-size: 14px; font-weight: 600; }
 
-        .header {
-            padding: 30px 20px;
-            max-width: 900px;
-            margin: 0 auto;
-            border-bottom: 2px solid #000;
-        }
+    .container {
+      width: min(980px, 96%);
+      margin: 20px auto 40px;
+      padding: 24px;
+      background: var(--paper);
+      border-radius: 16px;
+      box-shadow: 0 10px 35px rgba(0,0,0,.08);
+      border: 1px solid #e6e7ea;
+    }
 
-        .header h1 {
-            margin: 0 0 10px 0;
-            font-size: 32px;
-            font-weight: bold;
-        }
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    h1 { color: var(--red); font-size: clamp(36px, 5vw, 62px); line-height: .95; margin-bottom: 10px; }
+    .code { font-size: 10px; margin-bottom: 12px; color: #3f3f46; }
+    .intro { max-width: 550px; font-size: clamp(14px, 1.6vw, 19px); line-height: 1.25; color: #1f2937; }
 
-        .header .email {
-            margin: 5px 0;
-            font-size: 16px;
-            color: #333;
-        }
+    .image-placeholder {
+      height: 290px;
+      border: 2px dashed #b8bdc7;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #ffffff 0%, #eceef2 100%);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: #6b7280;
+      padding: 20px;
+      font-weight: 600;
+    }
 
-        .header .email a {
-            color: #0000EE;
-            text-decoration: none;
-        }
+    .question { margin-top: 18px; padding-top: 14px; border-top: 1px solid #e2e6eb; }
+    .q-title { display: flex; gap: 10px; align-items: flex-start; font-size: clamp(14px, 1.7vw, 19px); }
+    .num {
+      width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid #101010;
+      display: grid; place-items: center; font-size: 12px; flex: 0 0 auto; margin-top: 2px;
+    }
 
-        .header .affiliation {
-            margin: 5px 0;
-            font-size: 14px;
-            color: #555;
-        }
+    .chip-grid { display: grid; grid-template-columns: repeat(7, minmax(92px,1fr)); gap: 10px; margin: 12px 0 0 32px; }
+    .chip {
+      border: 1px solid #c9ced7; border-radius: 14px; padding: 10px 8px; text-align: center;
+      font-size: 11px; color: #4b5563; background: #fff; cursor: pointer; transition: .2s;
+      min-height: 70px; display: grid; place-items: center; gap: 4px;
+    }
+    .chip:hover { border-color: var(--pink); color: var(--pink); }
+    .chip.active { background: #ffe8ef; border-color: var(--pink); color: #be0c3d; font-weight: 700; transform: translateY(-1px); }
+    .chip .ico { font-size: 20px; line-height: 1; }
 
-        .header .affiliation a {
-            color: #0000EE;
-        }
+    .scale { margin: 12px 0 0 32px; display: grid; grid-template-columns: 80px repeat(5, 1fr) 80px; gap: 8px; align-items: center; max-width: 660px; }
+    .edge { font-size: 12px; text-align: center; color: #475569; }
+    .rate-btn {
+      border: 1.6px solid #2a2a2a; border-radius: 14px; min-height: 50px; background: #fff;
+      cursor: pointer; font-size: 16px; font-weight: 600; transition: .18s;
+    }
+    .rate-btn:hover { transform: translateY(-1px); }
+    .rate-btn.active { background: #ffd7e3; border-color: #d90a3f; color: #d90a3f; }
+    .star { font-size: 24px; }
 
-        .interests {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #ccc;
-        }
+    .radio-list { display: grid; gap: 7px; margin: 12px 0 0 32px; font-size: 13px; }
+    .radio-list label { display: flex; align-items: center; gap: 8px; }
 
-        .interests h3 {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
+    .line-input, textarea {
+      width: min(640px, 95%); margin: 10px 0 0 32px; font-size: 14px;
+      border: none; border-bottom: 2px solid #6b7280; background: transparent; padding: 8px 0; outline: none;
+    }
+    textarea {
+      border: 1.8px solid #474747; border-radius: 14px; min-height: 90px; padding: 10px 12px;
+      background: #fff;
+    }
 
-        .interests ul {
-            margin: 0;
-            padding-left: 20px;
-            font-size: 14px;
-        }
+    .send-wrap { margin: 26px 0 8px 6px; display: flex; gap: 12px; align-items: center; }
+    .up, .send {
+      border: none; background: var(--pink); color: #fff; cursor: pointer;
+      transition: .2s; box-shadow: 0 8px 18px rgba(234, 0, 72, .25);
+    }
+    .up { width: 56px; height: 56px; border-radius: 50%; font-size: 34px; line-height: 1; }
+    .send { border-radius: 999px; font-size: 34px; padding: 10px 34px; }
+    .send:disabled, .up:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
 
-        .navigation {
-            background-color: #f5f5f5;
-            border-bottom: 1px solid #ccc;
-            padding: 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+    .helper { margin-left: 10px; font-size: 12px; color: #b91c1c; min-height: 16px; }
 
-        .nav-container {
-            max-width: 900px;
-            margin: 0 auto;
-            display: flex;
-            gap: 0;
-            overflow-x: auto;
-        }
+    footer { margin-top: 20px; border-radius: 14px; overflow: hidden; }
+    .f-grid { display: grid; grid-template-columns: 2fr 2fr 1.2fr; }
+    .f-col { padding: 20px 22px; font-size: 12px; color: #fff; }
+    .f-dark { background: #090909; }
+    .f-red { background: var(--pink); }
+    .copy { background: #fff; padding: 10px 18px; font-size: 11px; color: #374151; }
 
-        .nav-button {
-            padding: 12px 20px;
-            background-color: #f5f5f5;
-            border: none;
-            border-right: 1px solid #ccc;
-            border-top: 2px solid transparent;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: normal;
-            color: #000;
-            white-space: nowrap;
-        }
+    .success { display: none; text-align: center; }
+    .success.active { display: block; }
+    .check {
+      width: 124px; height: 124px; border-radius: 50%; border: 10px solid var(--ok); margin: 24px auto 10px; position: relative;
+    }
+    .check::after { content: "✓"; position: absolute; inset: 0; display: grid; place-items: center; color: var(--ok); font-size: 62px; font-weight: 700; }
+    .success h2 { color: var(--red); font-size: clamp(44px, 7vw, 78px); line-height: .95; margin-bottom: 14px; }
+    .success p { font-size: clamp(16px, 2.4vw, 34px); max-width: 700px; margin: 0 auto 16px; }
+    .success .image-placeholder { max-width: 440px; margin: 0 auto; }
 
-        .nav-button.active {
-            background-color: #fff;
-            border-top: 2px solid #000;
-            font-weight: bold;
-        }
+    .hidden { display: none; }
 
-        .nav-button:hover {
-            background-color: #e8e8e8;
-        }
-
-        .main-content {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 30px 20px;
-        }
-
-        .section {
-            display: none;
-        }
-
-        .section.active {
-            display: block;
-        }
-
-        .section h2 {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .add-button {
-            padding: 8px 16px;
-            background-color: #fff;
-            border: 1px solid #000;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .add-button:hover {
-            background-color: #f5f5f5;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        .stat-card {
-            padding: 15px;
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-        }
-
-        .stat-card strong {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .stat-card .number {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .item-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .item {
-            margin-bottom: 15px;
-            padding: 15px;
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-        }
-
-        .item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-
-        .item-content {
-            flex: 1;
-        }
-
-        .item-title {
-            margin: 0 0 8px 0;
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        .item-description {
-            margin: 5px 0;
-            color: #555;
-            font-size: 14px;
-        }
-
-        .item-meta {
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
-        }
-
-        .item-meta span {
-            margin-right: 15px;
-        }
-
-        .item-body {
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #fff;
-            border: 1px solid #e0e0e0;
-            font-size: 14px;
-            white-space: pre-wrap;
-        }
-
-        .item-link {
-            margin-top: 8px;
-            display: inline-block;
-        }
-
-        .item-link a {
-            color: #0000EE;
-            text-decoration: underline;
-            font-size: 14px;
-        }
-
-        .item-actions {
-            display: flex;
-            gap: 8px;
-            margin-left: 15px;
-        }
-
-        .item-actions button {
-            padding: 5px 10px;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .item-actions button:hover {
-            background-color: #f5f5f5;
-        }
-
-        .item-actions .delete-btn {
-            color: #c00;
-        }
-
-        .empty-state {
-            padding: 20px;
-            text-align: center;
-            color: #666;
-        }
-
-        .empty-state button {
-            margin-left: 10px;
-            color: #0000EE;
-            text-decoration: underline;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0,0,0,0.5);
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            z-index: 1000;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal {
-            background-color: #fff;
-            border: 2px solid #000;
-            max-width: 600px;
-            width: 100%;
-            max-height: 90vh;
-            overflow: auto;
-        }
-
-        .modal-header {
-            padding: 20px;
-            border-bottom: 1px solid #ccc;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-header h2 {
-            margin: 0;
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            padding: 0;
-            width: 30px;
-            height: 30px;
-        }
-
-        .modal-body {
-            padding: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-            font-family: Arial, sans-serif;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 10px;
-            padding-top: 20px;
-        }
-
-        .save-button {
-            flex: 1;
-            padding: 10px;
-            background-color: #000;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .save-button:hover {
-            background-color: #333;
-        }
-
-        .cancel-button {
-            padding: 10px 20px;
-            background-color: #fff;
-            border: 1px solid #000;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .cancel-button:hover {
-            background-color: #f5f5f5;
-        }
-
-        .contact-section {
-            line-height: 1.8;
-        }
-
-        .contact-section p {
-            margin-bottom: 15px;
-        }
-
-        .contact-section h3 {
-            font-size: 18px;
-            font-weight: bold;
-            margin-top: 30px;
-            margin-bottom: 15px;
-        }
-    </style>
+    @media (max-width: 780px) {
+      .hero { grid-template-columns: 1fr; }
+      .chip-grid { grid-template-columns: repeat(3, minmax(92px,1fr)); }
+      .scale { grid-template-columns: 1fr; max-width: none; }
+      .edge { text-align: left; }
+      .f-grid { grid-template-columns: 1fr; }
+      .menu { gap: 12px; padding: 10px 16px; }
+      .menu a { font-size: 12px; }
+      .container { padding: 16px; }
+    }
+  </style>
 </head>
 <body>
-    <!-- Header -->
-    <div class="header">
-        <h1>Mauricio M. Paniagua</h1>
-        <p class="email">
-            <a href="mailto:mauricio@umich.mx">mauricio@umich.mx</a>
-        </p>
-        <p class="affiliation">
-            Aspirante a Investigador, Facultad de Ingeniería Eléctrica 
-            <a href="http://www.fie.umich.mx/" target="_blank" rel="noopener noreferrer">FIE</a>, 
-            de la Universidad Michoacana de San Nicolás de Hidalgo UMSNH
-        </p>
-        
-        <div class="interests">
-            <h3>Intereses</h3>
-            <ul>
-                <li>Investigación</li>
-                <li>Desarrollo de proyectos</li>
-                <li>Programación</li>
-            </ul>
-        </div>
+  <header class="top">
+    <div class="top-inner">
+      <div class="logo"><b>BEST</b>COLOMBIA</div>
+      <nav class="menu">
+        <a href="#">Inicio</a><a href="#">Servicios</a><a href="#">EA</a><a href="#">Eventos</a><a href="#">Contacto</a><a href="#">ES</a>
+      </nav>
+      <div style="color:#ffffffc0; font-size:13px;">🛒</div>
     </div>
+  </header>
 
-    <!-- Navigation -->
-    <nav class="navigation">
-        <div class="nav-container">
-            <button class="nav-button active" onclick="showSection('inicio')">Inicio</button>
-            <button class="nav-button" onclick="showSection('trabajos')">Trabajos y Proyectos</button>
-            <button class="nav-button" onclick="showSection('notas')">Notas de Clase</button>
-            <button class="nav-button" onclick="showSection('formularios')">Formularios</button>
-            <button class="nav-button" onclick="showSection('articulos')">Artículos</button>
+  <main id="surveyPage" class="container">
+    <section class="hero">
+      <div>
+        <h1>Encuesta de<br />satisfacción</h1>
+        <p class="code">Código: BR-F-57-01 | Fecha de entrada en vigor: 2018/11/21 | Versión: 1</p>
+        <p class="intro">Gracias por participar en nuestro programa de ensayos de aptitud. Esperamos que nuestro servicio haya cumplido con sus expectativas. Nos gustaría conocer su opinión para seguir mejorando.</p>
+      </div>
+      <div class="image-placeholder">Placeholder de imagen principal (Inicio)<br /><small style="font-weight:400;">Espacio reservado para reemplazar por tu imagen</small></div>
+    </section>
+
+    <form id="surveyForm">
+      <input type="hidden" id="q1" required />
+      <input type="hidden" id="q2" required />
+      <input type="hidden" id="q3" required />
+      <input type="hidden" id="q4" required />
+      <input type="hidden" id="q5" required />
+      <input type="hidden" id="q7" required />
+
+      <section class="question">
+        <div class="q-title"><span class="num">1</span>¿Cuál es la magnitud en la que participó?</div>
+        <div class="chip-grid" data-target="q1">
+          <button type="button" class="chip" data-value="Óptica"><span class="ico">🔭</span><span>Óptica</span></button>
+          <button type="button" class="chip" data-value="Volumen"><span class="ico">🧪</span><span>Volumen</span></button>
+          <button type="button" class="chip" data-value="Presión"><span class="ico">⚙️</span><span>Presión</span></button>
+          <button type="button" class="chip" data-value="Temperatura"><span class="ico">🌡️</span><span>Temperatura</span></button>
+          <button type="button" class="chip" data-value="Masa"><span class="ico">⚖️</span><span>Masa</span></button>
+          <button type="button" class="chip" data-value="Humedad"><span class="ico">💧</span><span>Humedad</span></button>
+          <button type="button" class="chip" data-value="Dimensional"><span class="ico">📏</span><span>Dimensional</span></button>
+          <button type="button" class="chip" data-value="Eléctrica"><span class="ico">⚡</span><span>Eléctrica</span></button>
+          <button type="button" class="chip" data-value="Analizadores específicos"><span class="ico">🧫</span><span>Analizadores</span></button>
+          <button type="button" class="chip" data-value="Tiempo"><span class="ico">⏱️</span><span>Tiempo</span></button>
+          <button type="button" class="chip" data-value="Mediciones especiales"><span class="ico">🧭</span><span>Especiales</span></button>
+          <button type="button" class="chip" data-value="Densidad"><span class="ico">🧷</span><span>Densidad</span></button>
+          <button type="button" class="chip" data-value="Espectrofotometría"><span class="ico">🫧</span><span>Espectrof.</span></button>
         </div>
-    </nav>
+      </section>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Inicio Section -->
-        <div id="inicio" class="section active">
-            <h2>CV</h2>
-            <div class="contact-section">
-                <p>
-                    Bienvenido a mi página personal académica. Soy estudiante de pregrado en la Facultad de Ingeniería Eléctrica de la UMSNH, con interés en la investigación y el desarrollo de proyectos.
-                </p>
-                
-                <h3>Materias y Trabajos</h3>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <strong>Trabajos y Proyectos</strong>
-                        <p class="number" id="count-trabajos">0</p>
-                    </div>
-                    <div class="stat-card">
-                        <strong>Notas de Clase</strong>
-                        <p class="number" id="count-notas">0</p>
-                    </div>
-                    <div class="stat-card">
-                        <strong>Formularios</strong>
-                        <p class="number" id="count-formularios">0</p>
-                    </div>
-                    <div class="stat-card">
-                        <strong>Artículos</strong>
-                        <p class="number" id="count-articulos">0</p>
-                    </div>
-                </div>
-
-                <h3>Contacto</h3>
-                <p>Mauricio M. Paniagua</p>
-                <p>Facultad de Ingeniería Eléctrica</p>
-                <p>Universidad Michoacana de San Nicolás de Hidalgo</p>
-                <p>Morelia, Michoacán, México</p>
-                <p><a href="mailto:mauricio@umich.mx">1912574a@umich.mx</a></p>
-            </div>
+      <section class="question">
+        <div class="q-title"><span class="num">2</span>Indique su nivel de satisfacción con el programa de ensayos de aptitud.</div>
+        <div class="scale" data-target="q2">
+          <div class="edge">Muy bajo</div>
+          <button type="button" class="rate-btn" data-value="1">1</button><button type="button" class="rate-btn" data-value="2">2</button><button type="button" class="rate-btn" data-value="3">3</button><button type="button" class="rate-btn" data-value="4">4</button><button type="button" class="rate-btn" data-value="5">5</button>
+          <div class="edge">Muy alto</div>
         </div>
+      </section>
 
-        <!-- Trabajos Section -->
-        <div id="trabajos" class="section">
-            <div class="section-header">
-                <h2>Trabajos y Proyectos</h2>
-                <button class="add-button" onclick="openModal('trabajo')">+ Agregar Trabajo</button>
-            </div>
-            <ul id="trabajos-list" class="item-list"></ul>
+      <section class="question">
+        <div class="q-title"><span class="num">3</span>¿Le ha resultado útil para su trabajo?</div>
+        <div class="scale" data-target="q3">
+          <div class="edge">No mucho</div>
+          <button type="button" class="rate-btn" data-value="1">1</button><button type="button" class="rate-btn" data-value="2">2</button><button type="button" class="rate-btn" data-value="3">3</button><button type="button" class="rate-btn" data-value="4">4</button><button type="button" class="rate-btn" data-value="5">5</button>
+          <div class="edge">Mucho</div>
         </div>
+      </section>
 
-        <!-- Notas Section -->
-        <div id="notas" class="section">
-            <div class="section-header">
-                <h2>Notas de Clase</h2>
-                <button class="add-button" onclick="openModal('nota')">+ Agregar Nota</button>
-            </div>
-            <ul id="notas-list" class="item-list"></ul>
+      <section class="question">
+        <div class="q-title"><span class="num">4</span>¿Cómo calificaría la relación calidad-precio de nuestro servicio?</div>
+        <div class="scale" data-target="q4">
+          <div class="edge">Mala</div>
+          <button type="button" class="rate-btn star" data-value="1">☆</button><button type="button" class="rate-btn star" data-value="2">☆</button><button type="button" class="rate-btn star" data-value="3">☆</button><button type="button" class="rate-btn star" data-value="4">☆</button><button type="button" class="rate-btn star" data-value="5">☆</button>
+          <div class="edge">Excelente</div>
         </div>
+      </section>
 
-        <!-- Formularios Section -->
-        <div id="formularios" class="section">
-            <div class="section-header">
-                <h2>Formularios</h2>
-                <button class="add-button" onclick="openModal('formulario')">+ Agregar Formulario</button>
-            </div>
-            <ul id="formularios-list" class="item-list"></ul>
+      <section class="question">
+        <div class="q-title"><span class="num">5</span>¿Qué tan receptivos hemos sido ante sus preguntas o inquietudes?</div>
+        <div class="scale" data-target="q5">
+          <div class="edge">Nada</div>
+          <button type="button" class="rate-btn" data-value="1">1</button><button type="button" class="rate-btn" data-value="2">2</button><button type="button" class="rate-btn" data-value="3">3</button><button type="button" class="rate-btn" data-value="4">4</button><button type="button" class="rate-btn" data-value="5">5</button>
+          <div class="edge">Mucho</div>
         </div>
+      </section>
 
-        <!-- Artículos Section -->
-        <div id="articulos" class="section">
-            <div class="section-header">
-                <h2>Artículos</h2>
-                <button class="add-button" onclick="openModal('articulo')">+ Agregar Artículo</button>
-            </div>
-            <ul id="articulos-list" class="item-list"></ul>
+      <section class="question">
+        <div class="q-title"><span class="num">6</span>¿Tiene alguna propuesta o sugerencia para mejorar el servicio?</div>
+        <div class="radio-list">
+          <label><input type="radio" name="q6" required /> Los requisitos solicitados son demasiados</label>
+          <label><input type="radio" name="q6" /> El personal no está suficientemente capacitado</label>
+          <label><input type="radio" name="q6" /> La atención al cliente es inadecuada</label>
+          <label><input type="radio" name="q6" /> Ampliar horarios de servicio</label>
+          <label><input type="radio" name="q6" /> Otro</label>
         </div>
-    </main>
+      </section>
 
-    <!-- Modal -->
-    <div id="modal" class="modal-overlay">
-        <div class="modal">
-            <div class="modal-header">
-                <h2 id="modal-title">Agregar</h2>
-                <button class="modal-close" onclick="closeModal()">×</button>
-            </div>
-            <div class="modal-body">
-                <form id="item-form" onsubmit="saveItem(event)">
-                    <div class="form-group">
-                        <label for="titulo">Título *</label>
-                        <input type="text" id="titulo" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="descripcion">Descripción</label>
-                        <textarea id="descripcion" rows="3"></textarea>
-                    </div>
-
-                    <div class="form-group" id="categoria-group" style="display: none;">
-                        <label for="categoria">Categoría</label>
-                        <input type="text" id="categoria" placeholder="Ej: Proyecto Final, Tarea, Investigación">
-                    </div>
-
-                    <div class="form-group" id="materia-group" style="display: none;">
-                        <label for="materia">Materia</label>
-                        <input type="text" id="materia">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="fecha">Fecha</label>
-                        <input type="date" id="fecha">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="contenido">Contenido</label>
-                        <textarea id="contenido" rows="6" placeholder="Contenido detallado, notas, observaciones..."></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="archivo">Enlace/URL</label>
-                        <input type="url" id="archivo" placeholder="https://...">
-                    </div>
-
-                    <div class="modal-actions">
-                        <button type="submit" class="save-button">Guardar</button>
-                        <button type="button" class="cancel-button" onclick="closeModal()">Cancelar</button>
-                    </div>
-                </form>
-            </div>
+      <section class="question">
+        <div class="q-title"><span class="num">7</span>¿Qué le ha parecido el contenido de los protocolos e informes?</div>
+        <div class="scale" data-target="q7">
+          <div class="edge">Malo</div>
+          <button type="button" class="rate-btn" data-value="1">1</button><button type="button" class="rate-btn" data-value="2">2</button><button type="button" class="rate-btn" data-value="3">3</button><button type="button" class="rate-btn" data-value="4">4</button><button type="button" class="rate-btn" data-value="5">5</button>
+          <div class="edge">Excelente</div>
         </div>
-    </div>
+      </section>
 
-    <script>
-        // Estado de la aplicación
-        let currentSection = 'inicio';
-        let currentType = '';
-        let editingId = null;
-        let data = {
-            trabajos: [],
-            notas: [],
-            formularios: [],
-            articulos: []
-        };
+      <section class="question"><div class="q-title"><span class="num">8</span>¿Alguna otra magnitud de interés?</div><input class="line-input" type="text" /></section>
+      <section class="question"><div class="q-title"><span class="num">9</span>Comentario adicional</div><textarea></textarea></section>
+      <section class="question"><div class="q-title"><span class="num">10</span>Sugerencia sobre el servicio</div><textarea></textarea></section>
+      <section class="question"><div class="q-title"><span class="num">11</span>Nombre (opcional)</div><input class="line-input" type="text" /></section>
 
-        // Cargar datos del localStorage
-        function loadData() {
-            const saved = localStorage.getItem('portfolioData');
-            if (saved) {
-                data = JSON.parse(saved);
-            }
-            updateCounts();
-            renderAllLists();
-        }
+      <div class="send-wrap">
+        <button class="up" id="upBtn" type="submit" disabled>↑</button>
+        <button class="send" id="sendBtn" type="submit" disabled>Mandar</button>
+      </div>
+      <p class="helper" id="helperText">Complete las preguntas obligatorias para habilitar el envío.</p>
+    </form>
 
-        // Guardar datos en localStorage
-        function saveData() {
-            localStorage.setItem('portfolioData', JSON.stringify(data));
-            updateCounts();
-        }
+    <footer>
+      <div class="f-grid">
+        <div class="f-col f-dark"><div class="logo"><b>BEST</b>COLOMBIA</div><small>Facebook | X | Linkedin | Whatsapp</small></div>
+        <div class="f-col f-dark"><small>Dirección:</small><div style="margin-top:8px;">Carrera 15 No 5 Sur 177 Int 2 Apto 1003<br/>Conjunto Mística Zipaquirá Cundinamarca</div></div>
+        <div class="f-col f-red"><small>Contáctanos:</small><div style="margin-top:8px;">+57 300 653 8385<br/>+52 443 327 8007<br/>+52 443 722 2792<br/>+52 443 329 9711</div></div>
+      </div>
+      <div class="copy">Copyright © Best Reference. Todos los derechos reservados. Aviso de privacidad | Términos y condiciones.</div>
+    </footer>
+  </main>
 
-        // Actualizar contadores
-        function updateCounts() {
-            document.getElementById('count-trabajos').textContent = data.trabajos.length;
-            document.getElementById('count-notas').textContent = data.notas.length;
-            document.getElementById('count-formularios').textContent = data.formularios.length;
-            document.getElementById('count-articulos').textContent = data.articulos.length;
-        }
+  <section id="successPage" class="container success">
+    <div class="check"></div>
+    <h2>Su encuesta<br/>ha sido enviada<br/>correctamente.</h2>
+    <p>Valoramos mucho su opinión.<br/>Seguiremos trabajando para brindarle una atención cada vez mejor.</p>
+    <div class="image-placeholder">Placeholder de imagen de confirmación (Post envío)<br /><small style="font-weight:400;">Espacio reservado para reemplazar por tu imagen</small></div>
+  </section>
 
-        // Cambiar de sección
-        function showSection(section) {
-            currentSection = section;
-            
-            // Actualizar botones de navegación
-            document.querySelectorAll('.nav-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // Actualizar secciones
-            document.querySelectorAll('.section').forEach(sec => {
-                sec.classList.remove('active');
-            });
-            document.getElementById(section).classList.add('active');
-        }
+  <script>
+    const form = document.getElementById('surveyForm');
+    const sendBtn = document.getElementById('sendBtn');
+    const upBtn = document.getElementById('upBtn');
+    const helperText = document.getElementById('helperText');
 
-        // Abrir modal
-        function openModal(type, id = null) {
-            currentType = type;
-            editingId = id;
-            
-            const modalTitle = document.getElementById('modal-title');
-            const categoriaGroup = document.getElementById('categoria-group');
-            const materiaGroup = document.getElementById('materia-group');
-            
-            // Configurar título
-            const typeNames = {
-                trabajo: 'Trabajo',
-                nota: 'Nota',
-                formulario: 'Formulario',
-                articulo: 'Artículo'
-            };
-            modalTitle.textContent = (id ? 'Editar' : 'Agregar') + ' ' + typeNames[type];
-            
-            // Mostrar/ocultar campos específicos
-            categoriaGroup.style.display = type === 'trabajo' ? 'block' : 'none';
-            materiaGroup.style.display = type === 'nota' ? 'block' : 'none';
-            
-            // Cargar datos si es edición
-            if (id) {
-                const item = data[type + 's'].find(i => i.id === id);
-                if (item) {
-                    document.getElementById('titulo').value = item.titulo || '';
-                    document.getElementById('descripcion').value = item.descripcion || '';
-                    document.getElementById('categoria').value = item.categoria || '';
-                    document.getElementById('materia').value = item.materia || '';
-                    document.getElementById('fecha').value = item.fecha || '';
-                    document.getElementById('contenido').value = item.contenido || '';
-                    document.getElementById('archivo').value = item.archivo || '';
-                }
-            } else {
-                document.getElementById('item-form').reset();
-                document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
-            }
-            
-            document.getElementById('modal').classList.add('active');
-        }
-
-        // Cerrar modal
-        function closeModal() {
-            document.getElementById('modal').classList.remove('active');
-            document.getElementById('item-form').reset();
-            editingId = null;
-        }
-
-        // Guardar item
-        function saveItem(event) {
-            event.preventDefault();
-            
-            const item = {
-                id: editingId || Date.now(),
-                titulo: document.getElementById('titulo').value,
-                descripcion: document.getElementById('descripcion').value,
-                categoria: document.getElementById('categoria').value,
-                materia: document.getElementById('materia').value,
-                fecha: document.getElementById('fecha').value,
-                contenido: document.getElementById('contenido').value,
-                archivo: document.getElementById('archivo').value,
-                fechaCreacion: editingId ? 
-                    data[currentType + 's'].find(i => i.id === editingId).fechaCreacion :
-                    new Date().toISOString()
-            };
-            
-            const listName = currentType + 's';
-            if (editingId) {
-                const index = data[listName].findIndex(i => i.id === editingId);
-                data[listName][index] = item;
-            } else {
-                data[listName].push(item);
-            }
-            
-            saveData();
-            renderList(listName);
-            closeModal();
-        }
-
-        // Eliminar item
-        function deleteItem(type, id) {
-            if (!confirm('¿Estás seguro de eliminar este elemento?')) return;
-            
-            const listName = type + 's';
-            data[listName] = data[listName].filter(i => i.id !== id);
-            saveData();
-            renderList(listName);
-        }
-
-        // Renderizar una lista
-        function renderList(listName) {
-            const list = document.getElementById(listName + '-list');
-            const items = data[listName];
-            const type = listName.slice(0, -1);
-            
-            if (items.length === 0) {
-                list.innerHTML = `
-                    <div class="empty-state">
-                        No hay elementos aún.
-                        <button onclick="openModal('${type}')">Agregar el primero</button>
-                    </div>
-                `;
-                return;
-            }
-            
-            list.innerHTML = items.map(item => `
-                <li class="item">
-                    <div class="item-header">
-                        <div class="item-content">
-                            <h4 class="item-title">${item.titulo}</h4>
-                            ${item.descripcion ? `<p class="item-description">${item.descripcion}</p>` : ''}
-                            <div class="item-meta">
-                                ${item.categoria ? `<span>Categoría: ${item.categoria}</span>` : ''}
-                                ${item.materia ? `<span>Materia: ${item.materia}</span>` : ''}
-                                ${item.fecha ? `<span>Fecha: ${item.fecha}</span>` : ''}
-                            </div>
-                            ${item.contenido ? `<div class="item-body">${item.contenido}</div>` : ''}
-                            ${item.archivo ? `<div class="item-link"><a href="${item.archivo}" target="_blank" rel="noopener noreferrer">Ver archivo/enlace</a></div>` : ''}
-                        </div>
-                        <div class="item-actions">
-                            <button onclick="openModal('${type}', ${item.id})">Editar</button>
-                            <button class="delete-btn" onclick="deleteItem('${type}', ${item.id})">Eliminar</button>
-                        </div>
-                    </div>
-                </li>
-            `).join('');
-        }
-
-        // Renderizar todas las listas
-        function renderAllLists() {
-            renderList('trabajos');
-            renderList('notas');
-            renderList('formularios');
-            renderList('articulos');
-        }
-
-        // Inicializar
-        loadData();
-
-        // Cerrar modal al hacer clic fuera
-        document.getElementById('modal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
-            }
+    function setActiveAndValue(container, targetId, clicked, starMode = false) {
+      const buttons = [...container.querySelectorAll('button')];
+      const value = clicked.dataset.value;
+      if (starMode) {
+        buttons.forEach((btn) => {
+          const on = Number(btn.dataset.value) <= Number(value);
+          btn.classList.toggle('active', on);
+          btn.textContent = on ? '★' : '☆';
         });
-    </script>
+      } else {
+        buttons.forEach((btn) => btn.classList.toggle('active', btn === clicked));
+      }
+      document.getElementById(targetId).value = value;
+      updateSubmitState();
+    }
+
+    document.querySelectorAll('.chip-grid').forEach((group) => {
+      const target = group.dataset.target;
+      group.querySelectorAll('.chip').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          group.querySelectorAll('.chip').forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+          document.getElementById(target).value = btn.dataset.value;
+          updateSubmitState();
+        });
+      });
+    });
+
+    document.querySelectorAll('.scale').forEach((group) => {
+      const target = group.dataset.target;
+      const starMode = group.querySelector('.star') !== null;
+      group.querySelectorAll('.rate-btn').forEach((btn) => {
+        btn.addEventListener('click', () => setActiveAndValue(group, target, btn, starMode));
+      });
+    });
+
+    form.querySelectorAll('input[name="q6"]').forEach((radio) => {
+      radio.addEventListener('change', updateSubmitState);
+    });
+
+    function updateSubmitState() {
+      const requiredFilled = ['q1','q2','q3','q4','q5','q7'].every((id) => document.getElementById(id).value.trim() !== '');
+      const q6Checked = !!form.querySelector('input[name="q6"]:checked');
+      const ready = requiredFilled && q6Checked;
+      sendBtn.disabled = !ready;
+      upBtn.disabled = !ready;
+      helperText.textContent = ready ? 'Listo: ya puede enviar el formulario.' : 'Complete las preguntas obligatorias para habilitar el envío.';
+      helperText.style.color = ready ? '#166534' : '#b91c1c';
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (sendBtn.disabled) return;
+      document.getElementById('surveyPage').classList.add('hidden');
+      document.getElementById('successPage').classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
 </body>
 </html>
